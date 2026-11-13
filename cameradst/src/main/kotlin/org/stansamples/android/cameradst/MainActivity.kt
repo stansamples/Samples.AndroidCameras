@@ -1,7 +1,10 @@
 package org.stansamples.android.cameradst
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.Button
@@ -26,7 +29,16 @@ internal class MainActivity : ComponentActivity() {
                 )
                 view.text = "open camera"
                 view.setOnClickListener { _ ->
-                    // todo
+                    val component = ComponentName(
+                        "org.stansamples.android.camerasrc.debug",
+                        "org.stansamples.android.camerasrc.CameraActivity"
+                    )
+                    val intent = Intent().setComponent(component)
+                    try {
+                        startActivity(intent)
+                    } catch (error: Throwable) {
+                        Log.w("[Main]", "open camera error: $error")
+                    }
                 }
                 root.addView(view)
             }
