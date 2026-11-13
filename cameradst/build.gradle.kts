@@ -51,5 +51,5 @@ androidComponents.onVariants { variant ->
 }
 
 dependencies {
-    // todo
+    implementation("androidx.activity:activity:1.13.0")
 }
