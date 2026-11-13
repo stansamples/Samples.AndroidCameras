@@ -3,5 +3,8 @@
 
     <application
         android:theme="@style/android:Theme.Material.NoActionBar">
+        <activity android:name=".CameraActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
     </application>
 </manifest>
