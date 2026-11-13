@@ -4,14 +4,31 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 internal class MainActivity : ComponentActivity() {
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val uri = result.data?.data
+        if (result.resultCode == RESULT_OK && uri != null) {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    runCatching {
+                        contentResolver.openInputStream(uri)!!.use { it.readBytes() }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val context: Context = this
@@ -34,11 +51,7 @@ internal class MainActivity : ComponentActivity() {
                         "org.stansamples.android.camerasrc.CameraActivity"
                     )
                     val intent = Intent().setComponent(component)
-                    try {
-                        startActivity(intent)
-                    } catch (error: Throwable) {
-                        Log.w("[Main]", "open camera error: $error")
-                    }
+                    cameraLauncher.launch(intent)
                 }
                 root.addView(view)
             }
