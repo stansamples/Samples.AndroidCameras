@@ -2,6 +2,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
+        android:label="camerasrc"
         android:theme="@style/android:Theme.Material.NoActionBar">
         <activity android:name=".CameraActivity"
             android:screenOrientation="portrait"
