@@ -12,6 +12,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +37,13 @@ internal class MainActivity : ComponentActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
             )
+            val iv = ImageView(context).also { view ->
+                view.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                )
+                root.addView(view)
+            }
             val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     lifecycleScope.launch {
@@ -45,7 +53,7 @@ internal class MainActivity : ComponentActivity() {
                             }
                         }.fold(
                             onSuccess = { bitmap ->
-                                // todo
+                                iv.setImageBitmap(bitmap)
                             },
                             onFailure = { error ->
                                 Log.w("[Main]", "take picture error: $error")
