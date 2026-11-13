@@ -24,9 +24,7 @@ import kotlinx.coroutines.withContext
 internal class MainActivity : ComponentActivity() {
     private fun getBitmap(uri: Uri): Bitmap {
         val source = ImageDecoder.createSource(contentResolver, uri)
-        return ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
-            decoder.setTargetSize(info.size.width, info.size.height)
-        }
+        return ImageDecoder.decodeBitmap(source)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
